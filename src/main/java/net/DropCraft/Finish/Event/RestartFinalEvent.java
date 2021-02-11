@@ -11,12 +11,9 @@ import org.jetbrains.annotations.NotNull;
 public class RestartFinalEvent extends Event {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
-    private String kickMessage;
-
 
     public RestartFinalEvent(Player player, String kickMessage, BungeeChannelApi api, Plugin plugin) {
-        this.kickMessage = kickMessage;
-        player.sendMessage(getKickMessage());
+        player.sendMessage(kickMessage);
         api.connect(player,"Lobby");
         Bukkit.getPluginManager().callEvent(new DeleteWorldEvent(plugin));
         plugin.getServer().shutdown();
@@ -26,13 +23,5 @@ public class RestartFinalEvent extends Event {
     @Override
     public HandlerList getHandlers() {
         return HANDLERS_LIST;
-    }
-
-    public String getKickMessage() {
-        return kickMessage;
-    }
-
-    public void setEndMessage(String kickMessage) {
-        this.kickMessage = kickMessage;
     }
 }
