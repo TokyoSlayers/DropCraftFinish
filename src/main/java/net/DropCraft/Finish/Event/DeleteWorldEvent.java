@@ -21,6 +21,8 @@ public class DeleteWorldEvent extends Event {
                 world.getWorldFolder().deleteOnExit();
             }else if(world.getEnvironment() == World.Environment.NORMAL && world.getName().equals("WorldCopy")){
                 CopyFile.copyWorld(world, worldName);
+                World loadWorld = plugin.getServer().getWorld(worldName);
+                CopyFile.loadWorld(loadWorld);
                 world.getWorldFolder().delete();
                 world.getWorldFolder().deleteOnExit();
             }

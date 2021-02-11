@@ -40,13 +40,16 @@ public class CopyFile {
         }
     }
 
+    public static boolean loadWorld(World world) {
+        return world!=null && Bukkit.getServer().unloadWorld(world, true);
+    }
+
     public static boolean unloadWorld(World world) {
         return world!=null && Bukkit.getServer().unloadWorld(world, false);
     }
 
     public static void copyWorld(World originalWorld, String newWorldName) {
         copyFileStructure(originalWorld.getWorldFolder(), new File(Bukkit.getWorldContainer(), newWorldName));
-        World world = new WorldCreator(newWorldName).createWorld();
-        unloadWorld(world);
+        new WorldCreator(newWorldName).createWorld();
     }
 }

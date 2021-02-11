@@ -15,6 +15,8 @@ public class SaveWorldEvent extends Event {
         for(World world : plugin.getServer().getWorlds()) {
             if(world.getEnvironment() == World.Environment.NORMAL && !world.getName().equals("WorldCopy")) {
                 CopyFile.copyWorld(world, "WorldCopy");
+                World unloadWorld = plugin.getServer().getWorld("WorldCopy");
+                CopyFile.loadWorld(unloadWorld);
             }
         }
     }
