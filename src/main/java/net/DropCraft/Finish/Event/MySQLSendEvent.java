@@ -26,7 +26,7 @@ public class MySQLSendEvent extends Event {
 
     public void createTable(){
         try {
-            PreparedStatement ps = MySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS `DropCraftServ_State` (ServerName VARCHAR(255),Stat VARCHAR(255))");
+            PreparedStatement ps = MySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS `DropCraftServ_State` (ServerName VARCHAR(255),Stat VARCHAR(255),NumberPlayers int(11))");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,7 +39,7 @@ public class MySQLSendEvent extends Event {
             ResultSet rs = sts.executeQuery();
             if(!rs.next()) {
                 sts.close();
-                sts = MySQL.getConnection().prepareStatement("INSERT INTO `DropCraftServ_State` (ServerName, Stat) VALUES ('" + serverName + "','" + state + "')");
+                sts = MySQL.getConnection().prepareStatement("INSERT INTO `DropCraftServ_State` (ServerName, Stat,NumberPlayers) VALUES ('" + serverName + "','" + state + "','" + 0 +"')");
                 sts.executeUpdate();
                 sts.close();
             }
@@ -65,6 +65,30 @@ public class MySQLSendEvent extends Event {
             ResultSet rs = sts.executeQuery();
             if (rs.next()){
                 dif = rs.getString("Stat");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dif;
+    }
+
+    public void setNumberPlayer(int numberPlayer, String serverName){
+        try {
+            PreparedStatement sts = MySQL.getConnection().prepareStatement("UPDATE `DropCraftServ_State` SET `NumberPlayers`='" + numberPlayer + "' WHERE `ServerName`='"+ serverName +"'");
+            sts.executeUpdate();
+            sts.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getNumberPlayer(String serverName){
+        int dif = 0;
+        try {
+            PreparedStatement sts = MySQL.getConnection().prepareStatement("SELECT `NumberPlayers` FROM `DropCraftServ_State` WHERE `ServerName`='" + serverName + "'");
+            ResultSet rs = sts.executeQuery();
+            if (rs.next()){
+                dif = rs.getInt("NumberPlayers");
             }
         } catch (SQLException e) {
             e.printStackTrace();

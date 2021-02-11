@@ -14,12 +14,13 @@ public class MySQLReloadEvent extends Event {
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
     public MySQLReloadEvent(int iReload) {
+        int reload = iReload*20;
         new BukkitRunnable() {
             @Override
             public void run() {
                 counter++;
 
-                if (counter == iReload) {
+                if (counter == reload) {
                     if (!MySQL.isConnected()) {
                         MySQL.disconnect();
                         MySQL.connect("91.234.195.40", "c1500257c_dropcraft-serv", 3306, "c1500257c_plugin", ";HPyt@fVBT47");
