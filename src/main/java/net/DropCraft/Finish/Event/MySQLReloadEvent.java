@@ -33,6 +33,16 @@ public class MySQLReloadEvent extends Event {
         };
     }
 
+    public MySQLReloadEvent() {
+        if (!MySQL.isConnected()) {
+            MySQL.disconnect();
+            MySQL.connect("91.234.195.40", "c1500257c_dropcraft-serv", 3306, "c1500257c_plugin", ";HPyt@fVBT47");
+            System.out.println("MySQL ckeck REDEMARER !");
+        } else {
+            System.out.println("MySQL check OK !");
+        }
+    }
+
     @NotNull
     @Override
     public HandlerList getHandlers() {

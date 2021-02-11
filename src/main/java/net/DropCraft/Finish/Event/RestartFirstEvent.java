@@ -15,7 +15,6 @@ public class RestartFirstEvent extends Event {
     private BukkitScheduler schedulers;
     private String kickMessage;
 
-
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
     public RestartFirstEvent(int timer, Plugin plugin,String kickMessage) {

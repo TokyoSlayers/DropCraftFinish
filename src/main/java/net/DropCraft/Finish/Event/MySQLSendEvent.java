@@ -1,7 +1,7 @@
 package net.DropCraft.Finish.Event;
 
 import net.DropCraft.Finish.Utils.MySQL;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -12,10 +12,10 @@ import java.sql.SQLException;
 
 public class MySQLSendEvent extends Event {
 
-
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
     public MySQLSendEvent(String state, String serverName) {
+        Bukkit.getPluginManager().callEvent(new MySQLReloadEvent());
         createTable();
         if(getStatement(serverName).isEmpty()){
             createStatement(state,serverName);
