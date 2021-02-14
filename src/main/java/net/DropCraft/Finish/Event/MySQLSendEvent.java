@@ -14,32 +14,42 @@ public class MySQLSendEvent extends Event {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-    public MySQLSendEvent(String state, String serverName) {
+    public MySQLSendEvent(String state, String serverName, int tps) {
         Bukkit.getPluginManager().callEvent(new MySQLReloadEvent());
         createTable();
         if(getStatement(serverName).isEmpty()){
-            createStatement(state,serverName);
+            createStatement(state,serverName,tps);
         }else{
             setStatement(state,serverName);
         }
     }
 
+    public MySQLSendEvent(int tps,int PlayerSize,String serverName){
+        Bukkit.getPluginManager().callEvent(new MySQLReloadEvent());
+        if(getNumberPlayer(serverName) != PlayerSize){
+            setNumberPlayer(PlayerSize,serverName);
+        }
+        if(getTps(serverName) != tps){
+            setTps(tps,serverName);
+        }
+    }
+
     public void createTable(){
         try {
-            PreparedStatement ps = MySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS `DropCraftServ_State` (ServerName VARCHAR(255),Stat VARCHAR(255),NumberPlayers int(11))");
+            PreparedStatement ps = MySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS `DropCraftServ_State` (ServerName VARCHAR(255),Stat VARCHAR(255),NumberPlayers int(11),Tps int(255))");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void createStatement(String state, String serverName){
+    public void createStatement(String state, String serverName,int tps){
         try {
             PreparedStatement sts = MySQL.getConnection().prepareStatement("SELECT `Stat` FROM `DropCraftServ_State` WHERE `ServerName`='" + serverName + "'");
             ResultSet rs = sts.executeQuery();
             if(!rs.next()) {
                 sts.close();
-                sts = MySQL.getConnection().prepareStatement("INSERT INTO `DropCraftServ_State` (ServerName, Stat,NumberPlayers) VALUES ('" + serverName + "','" + state + "','" + 0 +"')");
+                sts = MySQL.getConnection().prepareStatement("INSERT INTO `DropCraftServ_State` (ServerName, Stat,NumberPlayers,Tps) VALUES ('" + serverName + "','" + state + "','" + 0 + "','"+ tps +"')");
                 sts.executeUpdate();
                 sts.close();
             }
@@ -65,6 +75,30 @@ public class MySQLSendEvent extends Event {
             ResultSet rs = sts.executeQuery();
             if (rs.next()){
                 dif = rs.getString("Stat");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dif;
+    }
+
+    public void setTps(int tps, String serverName){
+        try {
+            PreparedStatement sts = MySQL.getConnection().prepareStatement("UPDATE `DropCraftServ_State` SET `Tps`='" + tps + "' WHERE `ServerName`='"+ serverName +"'");
+            sts.executeUpdate();
+            sts.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getTps(String serverName){
+        int dif = 0;
+        try {
+            PreparedStatement sts = MySQL.getConnection().prepareStatement("SELECT `Tps` FROM `DropCraftServ_State` WHERE `ServerName`='" + serverName + "'");
+            ResultSet rs = sts.executeQuery();
+            if (rs.next()){
+                dif = rs.getInt("Tps");
             }
         } catch (SQLException e) {
             e.printStackTrace();
