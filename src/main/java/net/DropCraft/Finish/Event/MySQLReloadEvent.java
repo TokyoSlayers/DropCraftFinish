@@ -13,7 +13,7 @@ public class MySQLReloadEvent extends Event {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-    public MySQLReloadEvent(int iReload) {
+    public MySQLReloadEvent(int iReload,String host,String database,int port,String user,String password) {
         int reload = iReload*20;
         new BukkitRunnable() {
             @Override
@@ -23,7 +23,7 @@ public class MySQLReloadEvent extends Event {
                 if (counter == reload) {
                     if (!MySQL.isConnected()) {
                         MySQL.disconnect();
-                        MySQL.connect("91.234.195.40", "c1500257c_dropcraft-serv", 3306, "c1500257c_plugin", ";HPyt@fVBT47");
+                        MySQL.connect(host, database, port, user, password);
                         System.out.println("MySQL ckeck REDEMARER !");
                     } else {
                         System.out.println("MySQL check OK !");
@@ -32,16 +32,6 @@ public class MySQLReloadEvent extends Event {
                 }
             }
         };
-    }
-
-    public MySQLReloadEvent() {
-        if (!MySQL.isConnected()) {
-            MySQL.disconnect();
-            MySQL.connect("91.234.195.40", "c1500257c_dropcraft-serv", 3306, "c1500257c_plugin", ";HPyt@fVBT47");
-            System.out.println("MySQL ckeck REDEMARER !");
-        } else {
-            System.out.println("MySQL check OK !");
-        }
     }
 
     @NotNull

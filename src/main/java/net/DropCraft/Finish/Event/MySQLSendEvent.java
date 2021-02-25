@@ -15,7 +15,6 @@ public class MySQLSendEvent extends Event {
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
     public MySQLSendEvent(String state, String serverName, int tps) {
-        Bukkit.getPluginManager().callEvent(new MySQLReloadEvent());
         createTable();
         if(getStatement(serverName).isEmpty()){
             createStatement(state,serverName,tps);
@@ -25,7 +24,6 @@ public class MySQLSendEvent extends Event {
     }
 
     public MySQLSendEvent(int tps,int PlayerSize,String serverName){
-        Bukkit.getPluginManager().callEvent(new MySQLReloadEvent());
         if(getNumberPlayer(serverName) != PlayerSize){
             setNumberPlayer(PlayerSize,serverName);
         }
