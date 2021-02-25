@@ -34,7 +34,7 @@ public class MySQLSendEvent extends Event {
 
     public void createTable(){
         try {
-            PreparedStatement ps = MySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS `DropCraftServ_State` (ServerName VARCHAR(255),Stat VARCHAR(255),NumberPlayers int(11),Tps int(255))");
+            PreparedStatement ps = MySQL.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS `DropCraftServ_State` (ServerName VARCHAR(255),Stat VARCHAR(255),NumberPlayers int(11),Tps int(11))");
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
